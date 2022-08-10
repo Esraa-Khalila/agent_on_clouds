@@ -37,7 +37,7 @@ itemsRouter.get("/item/:id", (req, res) => {
 });
 
 itemsRouter.put("/updateItem/:id", (req, res) => {
-  const name = req.body.name;
+  const title = req.body.title;
   const description = req.body.description;
   const price = req.body.price;
     const location = req.body.location;
@@ -45,7 +45,7 @@ itemsRouter.put("/updateItem/:id", (req, res) => {
   
   connection.query(
     "UPDATE items SET title=?,description=? ,price=?, location=? WHERE id=?  ",
-    [name, description, , locationprice, id,location,price],
+    [title, description,price,location,id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -66,7 +66,7 @@ itemsRouter.delete("/delete/:id", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.send(result);
+        res.send('result');
       }
     }
   );

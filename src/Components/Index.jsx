@@ -16,10 +16,12 @@ function Index() {
   }, []);
 
   //delete producr from user
-  const deleteRequestHandler = (id, user_id) => {
-    if(id!=user_id) return
-    const response = axios.delete(`http://127.0.0.1:3003/delete/${id}`);
-    setItems(items.filter((user) => user.id !== id));
+  const deleteRequestHandler = (id, user_id ,post_id) => {
+    console.log(id);
+    console.log(user_id);
+    if (id != user_id) return
+    const response = axios.delete(`http://127.0.0.1:3003/delete/${post_id}`);
+    setItems(items.filter((user) => user.id !== post_id));
   };
 
   //add product
@@ -152,8 +154,8 @@ function Index() {
             <div class="row">
               {/* <!-- Pricing Table --> */}
               {items.map((x) => (
-                <div class="pricing-table col-xl-3 col-lg-6 col-md-6 col-sm-12 ">
-                  <div class="inner-box " style={{ height: "590px" }}>
+                <div class="pricing-table col-xl-3 col-lg-3 col-md-6 col-sm-12  ">
+                  <div class="inner-box " style={{ height: "610px" }}>
                     <div class="image-box">
                       <figure class="image">
                         <img src="images/resource/pr-table1.png" alt="" />
@@ -168,7 +170,7 @@ function Index() {
                       </svg>
                     </div>
                     <div class="title-box ">
-                      <h3> {x.title}</h3>
+                      <h4> {x.title}</h4>
                     </div>
                     <div class="price-box">
                       <div class="price">
@@ -187,7 +189,7 @@ function Index() {
 
                     <button
                       class=" theme-btn btn-style-two regular"
-                      onClick={() => deleteRequestHandler(x.id, x.user_id)}
+                      onClick={() => deleteRequestHandler(jwt?.id, x.user_id,x.id)}
                     >
                       Delete
                     </button>

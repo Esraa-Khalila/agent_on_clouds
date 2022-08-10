@@ -3,39 +3,58 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 function Update() {
-  //update product 
+  //update product
   const { id } = useParams();
   const [item, setItem] = useState({
-    name: "",
+    title: "",
     description: "",
+    location: "",
+    price: "",
   });
-const [product, setProduct] = useState([]);
-useEffect(() => {
-  axios.get(`http://127.0.0.1:3003/item/${id}`).then((res) => {
-    setProduct(res.data[0]);
-  });
-  console.log(product);
-}, []);
-    
+    const getOne = (id) => {
+      axios
+        .get(`http://127.0.0.1:3003/item/${id}`)
+        .then((response) => {
+          setItem(response.data[0]);
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
+    useEffect(() => {
+      if (id) getOne(id);
+    }, [id]);
+
   const handel = (e) => {
     setItem({ ...item, [e.target.name]: e.target.value });
   };
-  const updateItem = () => {
+  const updateItem = (e) => {
+    e.preventDefault();
+
     let data = {
-      name: item.name,
+      title: item.title,
       description: item.description,
+      location: item.location,
+      price: item.price,
     };
-    axios.put(`http://127.0.0.1:3003/updateItem/${id}`, data).then((result) => {
-      console.log(result.data);
-    });
+    axios
+      .put(`http://127.0.0.1:3003/updateItem/${id}`, data)
+       swal({
+         title: "update success!",
+         icon: "warning",
+         button: "sure!",
+       }).then(function () {
+         window.location.href = "/";
+       });
+
   };
   return (
     <div>
       <div>
         <div class="page-wrapper">
           {/* <!-- Preloader --> */}
-
-      
 
           <section
             class="recipes-section"
@@ -177,47 +196,63 @@ useEffect(() => {
               <div class="login-form">
                 <h2>update Product</h2>
 
-                {/* <form method="post" action="contact.html"> */}
-                <div class="form-group">
-                  <label>name Product *</label>
-                  <input
-                    type="text"
-                    onChange={handel}
-                    name="name"
-                    value={product.name}
-                    required
-                  />
-                </div>
+                <form onSubmit={updateItem}>
+                  <div class="form-group">
+                    <label>name Product *</label>
+                    <input
+                      type="text"
+                      onChange={handel}
+                      name="title"
+                      value={item.title}
+                      required
+                    />
+                  </div>
 
-                <div class="form-group">
-                  <label>description *</label>
-                  <input
-                    type="text"
-                    onChange={handel}
-                    value={product.description}
-                    name="description"
-                    required
-                  />
-                </div>
+                  <div class="form-group">
+                    <label>description *</label>
+                    <input
+                      type="text"
+                      onChange={handel}
+                      value={item.description}
+                      name="description"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>price *</label>
+                    <input
+                      type="text"
+                      onChange={handel}
+                      value={item.price}
+                      name="price"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>location *</label>
+                    <input
+                      type="text"
+                      onChange={handel}
+                      value={item.location}
+                      name="location"
+                      required
+                    />
+                  </div>
 
-                <div class="form-group">
-                  <input
-                    class="theme-btn"
-                    type="submit"
-                    name="submit-form"
-                    value="update"
-                    onClick={updateItem}
-                  />
-                </div>
-
-                {/* </form> */}
+                  <div class="form-group">
+                    <input
+                      class="theme-btn"
+                      type="submit"
+                      name="submit-form"
+                      value="update"
+                      // onClick={updateItem}
+                    />
+                  </div>
+                </form>
               </div>
             </div>
           </section>
-
-  
         </div>
-
       </div>
     </div>
   );
